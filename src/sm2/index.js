@@ -99,7 +99,15 @@ function doDecrypt(encryptData, privateKey, cipherMode = 1) {
   // c3 = hash(x2 || msg || y2)
   const checkC3 = _.arrayToHex(sm3([].concat(x2, msg, y2)))
 
-  return checkC3 === c3 ? _.arrayToUtf8(msg) : ''
+  if (checkC3 === c3) {
+    try {
+      return _.arrayToUtf8(msg)
+    } catch (e) {
+      return msg
+    }
+  } else {
+    return ''
+  }
 }
 
 /**
